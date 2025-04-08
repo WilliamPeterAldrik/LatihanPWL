@@ -10,7 +10,7 @@ class Dosen extends Model
 
     protected $primaryKey = 'nik';
 
-    protected $fillable =['nik','name','birthdate','email'];
+    protected $fillable =['nik','name','tanggal_lahir','email'];
 
     protected $keyType = 'string';
 

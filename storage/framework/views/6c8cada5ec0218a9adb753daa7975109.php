@@ -1,5 +1,5 @@
-@extends('layouts/index')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="container">
           <div class="page-inner">
             <div
@@ -18,8 +18,8 @@
                   <div class="card-header">
                   </div>
                   <div class="card-body">
-                            <form method="POST" action="{{ route('dosenStore')}}">
-                              @csrf
+                            <form method="POST" action="<?php echo e(route('dosenStore')); ?>">
+                              <?php echo csrf_field(); ?>
                               <div class="form-group">
                                 <label for="nik">NIK</label>
                                 <input type="text" id="nik" name="nik" placeholder="e.g. 7200001" class="form-control" maxlength="7" required autofocus/>
@@ -49,16 +49,17 @@
           </div>
         </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('ExtraCSS')
+<?php $__env->startSection('ExtraCSS'); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('ExtraJS')
+<?php $__env->startSection('ExtraJS'); ?>
   <script>
     $("#table-lecturer").DataTable({
       pageLength: 25,
     });
   </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts/index', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\william\Downloads\academic_mis-main\academic_mis-main\resources\views/dosen/create.blade.php ENDPATH**/ ?>

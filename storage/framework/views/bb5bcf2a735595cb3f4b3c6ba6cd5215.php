@@ -18,8 +18,8 @@
                   <div class="card-header">
                     <div class="d-flex align-items-center">
                       <h4 class="card-title">Add Data Dosen</h4>
-                      <a
-                        class="btn btn-primary btn-round ms-auto" href="<?php echo e(route('dosenCreate')); ?>">
+                      <a href="<?php echo e(route('dosenCreate')); ?>"
+                        class="btn btn-primary btn-round ms-auto" >
                         <i class="fa fa-plus"></i>
                         Add Dosen
                       </a>
@@ -145,19 +145,20 @@
                             <td><?php echo e($dosen->email); ?></td>
                             <td>
                               <div class="form-button-action">
-                                <button
+                                <a
                                   type="button"
                                   data-bs-toggle="tooltip"
-                                  title=""
-                                  class="btn btn-link btn-primary btn-lg"
-                                  data-original-title="Edit Task"
+                                  title="Edit Dosen"
+                                  class="btn btn-link btn-primary btn-lg edit-dosen"
+                                  data-original-title="Edit Dosen"
+                                  href="<?php echo e(route('dosenEdit', [$dosen->nik])); ?>"
                                 >
                                   <i class="fa fa-edit"></i>
-                                </button>
+                                </a>
                                 <button
                                   type="button"
                                   data-bs-toggle="tooltip"
-                                  title=""
+                                  title="Remove"
                                   class="btn btn-link btn-danger"
                                   data-original-title="Remove"
                                 >
@@ -179,5 +180,24 @@
 
 <?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('ExtraCSS'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('ExtraJS'); ?>
+<script>
+  $(".edit-dosen").click(function(){
+    window.location.href = $(this).data('url');
+  });
+  <?php if(session('success')): ?>
+  $.notify({
+    message: <?php echo e(session('success')); ?>
+
+  },{
+    delay: 5000,
+  })
+    
+  <?php endif; ?>
+</script>
+<?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts/index', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\william\Downloads\academic_mis-main\academic_mis-main\resources\views/dosen/index.blade.php ENDPATH**/ ?>

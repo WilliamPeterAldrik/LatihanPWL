@@ -18,8 +18,8 @@
                   <div class="card-header">
                     <div class="d-flex align-items-center">
                       <h4 class="card-title">Add Data Dosen</h4>
-                      <a
-                        class="btn btn-primary btn-round ms-auto" href="{{route('dosenCreate')}}">
+                      <a href="{{route('dosenCreate')}}"
+                        class="btn btn-primary btn-round ms-auto" >
                         <i class="fa fa-plus"></i>
                         Add Dosen
                       </a>
@@ -145,19 +145,20 @@
                             <td>{{ $dosen->email }}</td>
                             <td>
                               <div class="form-button-action">
-                                <button
+                                <a
                                   type="button"
                                   data-bs-toggle="tooltip"
-                                  title=""
-                                  class="btn btn-link btn-primary btn-lg"
-                                  data-original-title="Edit Task"
+                                  title="Edit Dosen"
+                                  class="btn btn-link btn-primary btn-lg edit-dosen"
+                                  data-original-title="Edit Dosen"
+                                  href="{{ route('dosenEdit', [$dosen->nik]) }}"
                                 >
                                   <i class="fa fa-edit"></i>
-                                </button>
+                                </a>
                                 <button
                                   type="button"
                                   data-bs-toggle="tooltip"
-                                  title=""
+                                  title="Remove"
                                   class="btn btn-link btn-danger"
                                   data-original-title="Remove"
                                 >
@@ -179,3 +180,21 @@
 
 @endsection
 
+@section('ExtraCSS')
+@endsection
+
+@section('ExtraJS')
+<script>
+  $(".edit-dosen").click(function(){
+    window.location.href = $(this).data('url');
+  });
+  @if (session('success'))
+  $.notify({
+    message: {{ session('success') }}
+  },{
+    delay: 5000,
+  })
+    
+  @endif
+</script>
+@endsection

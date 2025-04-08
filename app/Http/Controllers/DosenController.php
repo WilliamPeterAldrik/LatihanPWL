@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dosen;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DosenController extends Controller
 {
@@ -28,15 +29,16 @@ class DosenController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = validator($request->all(),[
-            'nik'=>'required|string|max:7|unique:dosen,nik',
-            'name'=>'required|string|max:100',
-            'email'=>'required|string|email|max:50|unique:dosen,nik',
-            'birth_date'=>'required',
-        ])-validate();
-        $dosen = new Dosen($validateData);
-        $dosen -> save();
-        return redirect(route('dosenList'));
+        $validateData = $request->validate([
+            'nik' => 'required|string|max:7|unique:dosen,nik',
+            'name' => 'required|string|max:100',
+            'email' => 'required|string|email|max:50|unique:dosen,email',
+            'tanggal_lahir' => 'required|date',
+        ]);
+    
+        Dosen::create($validateData);
+    
+        return redirect(route('dosenList'))->with('success', 'Data dosen berhasil ditambahkan');
     }
 
     /**
@@ -52,22 +54,42 @@ class DosenController extends Controller
      */
     public function edit(Dosen $dosen)
     {
-        //
+        return view('dosen.edit')->with('dosen', $dosen);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dosen $dosen)
+
+    public function update(Request $request, string $nik)
     {
-        //
+        $dosen = Dosen::find($nik);
+        // Validasi input
+        $validateData = $request->validate([
+            'nik' => ['required', 'string', 'max:7', Rule::unique('dosen', 'nik')->ignore($dosen->nik, 'nik')],
+            'name' => 'required|string|max:100',
+            'email' => 'required|string',
+            'tanggal_lahir' => 'required|date',
+        ]);
+
+    
+        // Update data dosen
+        $dosen['name'] = $validateData['name'];
+        $dosen['email'] = $validateData['email'];
+        $dosen['tanggal_lahir'] = $validateData['tanggal_lahir'];
+        $dosen->save();
+    
+        // Redirect dengan pesan sukses
+        return redirect(route('dosenList'))->with('success', 'Data dosen berhasil diubah');
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Dosen $dosen)
     {
-        //
+        $dosen -> delete();
+        return redirect(route('dosenList'));
     }
 }

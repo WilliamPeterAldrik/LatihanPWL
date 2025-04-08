@@ -28,7 +28,23 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nrp' => ['required','string','max:7','unique:mahasiswa,nrp'],
+            'name' => ['required','string','max:150'],
+            'birthdate' => ['required','date'],
+            'address' => ['required','string','max:200'],
+            'email' => ['nullable','string','email','max:255','unique:mahasiswa'],
+            'phone' => ['required','string','max:16'],
+            'profile_picture' => ['nullable','image','mimes:jpeg,png,jpg,gif,svg','max:2048'],
+        ]);
+        if ($request->hasFile('profile_picture')) {
+            $filename = $validateData['nrp'] . '.' . $request->file('profile_picture')->getClientOriginalExtension();
+            $request->file('profile_picture')->storeAs('uploads', $filename);
+            $mahasiswa['profile_picture'] = $filename;
+        }
+        $mahasiswa = new Mahasiswa($validatedData);
+        $mahasiswa->save();
+        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa created successfully.');
     }
 
     /**
